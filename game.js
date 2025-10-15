@@ -1,170 +1,164 @@
-// --- CONFIGURATION ---
+// --- SCENE CLASS ---
+class GameScene extends Phaser.Scene {
+    constructor() {
+        super('GameScene');
+        this.score = 0;
+        this.gameSpeed = 350;
+        this.isGameOver = false;
+    }
+
+    // --- LOAD ASSETS ---
+    preload() {
+        // Using Base64 URIs to embed assets directly in the code. No need for extra files!
+        // Player Cube Texture (White with blue glow)
+        this.load.image('player', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAArVJREFUaEPtmG1oFEEQh71VbdGLoAiK4MGDIj4IiiCCIAii4EGPIAiCegQvgoLgwbM/jYgnRRDEF0EQPAiiB0EQfPBoRARR8AYFRcEPEU1vj/dnZmZ3ZndmZ9PbFw8My3y72+32Z6qbYJgPPDgD/A3uA1eB88D1wN1gI5gJ5gP/gcvAbeB4MAYMA5MAC8BZYAP4F/gLeA5MAf+AB8A14DnwM7DQDs4D34G/gAPAZeA7cBzYBc4CwwM/A0c3gY+Bb4B9wCXgUeB74GjgYOB54GFgT+BYYAL4C/gI+A/4FBgD3gMHgYOBh4EdwE3gUeAgcGzwIDA0cCDwP/A0cDFwN/AvcBN4CjgYeBL4CDgamAlMDez/B3gWOD4YBrwN3AsMA/MD44HDwPHA0MAQMLYDx4CdwN7A8cDpwE5gZ+B8cBRwNPA48DTwNXACuBYYAngb2ADYDhwKjAWOA0cDRwOHgZOBf4DvgY+BDcB14A7gfuC/wI3AFmAy8DfwB3AGeA48BXwEnAPOAaeBC8A+YDrwP/ANeA04BswGlgMngcHAS8AC4CLwP3AC+B+4FpgEzgDbAfOAbcAR4BZwFdgBnAIOAbeBfYAVwMvAAuA6cAW4A/wN/AN2AseAp4EPgY9gGtgEPA5cBR4CVgG3gWfAVcAK4AIwF/gMeBYYCswGjgGjgRPAduA08BKwBngW2A4MBWZgZGAjMAw4FBgMPACsB44B3gfuAw8Cc4BnwEfgJuAUMBNYChwJjAC663gJGASsA+YCO4F9wD7gYGA0cBTwLHAmsAV4C/gWeA84CVwBdgCHgXvARcBh4ADwFHAkMDmwBxgNHA8cA/YCFwPPA2sDGwPjgWOB9cDWwGlgLfAqcB3YB/wJXAisB94D7gBvA38B14D9gN7A2sB+YAowFfgP+A84DPwDvAX+AV4C7gCjgeEAAAAASUVORK5CYII=');
+        // Spike Obstacle (Red)
+        this.load.image('spike', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAU5JREFUaEPtl+ENgCAMhL9oF+kk7SRdpJO0k3QSdpJu0gnoiQRoYl4Cg3/zDwnCQ57L5cIoqgghlJWlqg10Qv+5qg51gJ16wF5tQIvYAxvA7jwAbQA3TgAzwKk3gF0IA5jA5QwwA3w7ACvAXZ0AM8AeLwAawPqIACuAK58ATYAXdwAkwC93gI3AFn4A2AFm5QEwAzwwA8wA+1gASABf/gA2AFn5AUwA9+4AaAF28ACYAufiA1gBWfgATACfzAEzAE+hA0ABvDkATAA37gAfAM/yA8wAw/IAmAGezgAZgE/pAFB+gE/wAGgBFvEA0AK8PQBMAHfyAGABvj8AmAAuPgBmAU/rADsA3+gAMgDecAD8AJ/VAxJAC/DqAzAB3LoDzAD/zgKzAI/6AGyAGi8AGgC7+AAkAC6zACwA28wA+wHciQB2AFx5AVQBx/gAh9L/cxbY/3kAAAAASUVORK5CYII=');
+        // Block Obstacle
+        this.load.image('block', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAQdJREFUaEPtme0NwiAQhV/bpVvUSbpJO8k36STdpJ2kk3SS3kM2kM5BCyQk/yYPgfMNCPAwBw4OwYgQIiREa0hDK/S/NKQhbYA79YCT2gCXYg88gG1agDd4AG/wAGhAG/gA1IAm/oA0wAVeABVgDbyBA3gAbfAAaEAb/gA0IAv/gAswA3fwAFgAb/AANGAJ/gA0YA4+gBVgC7yBA3gAbfAAaEAb/gA0IAU+gAuwA/fwAFgAb/AANGAH/gA0YAZegBVgFXyBA3gAbfAAaEAb/gA0IAJ+gAswA3fwAFgAb/AANGAJ/gA0YAY+gBVgC7yBA3gAbfAAaEAb/gA0IAU+gAuwA/fwAFgAb/AANGAH/gA0YAZegBVgFXyBA3gAbfAAaEAb/gA0IAJ+gAswA3fwAFgAb/AANGAJ/gA0YAY+gBVgC7yBA3gAbfAAaEAb/gA0IAU+gAuwA/fwAFgAb/AANGAH/gA0YAZegBVgFXyBA3gAbfAAaEAb/gA0IAJ+gAuwA3/gAIBCWJgR/gB+AGuI0QkAAAAASUVORK5CYII=');
+        // Particle Texture
+        this.load.image('particle', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAADZJREFUKFNjZGBg+M+ABhjg6Aow/P9/BgyMv1gYGBj/MOAIg8vAwMBgPjEwMPy/nwvAGgMAe+kIAvD6AT8AAAAASUVORK5CYII=');
+    }
+
+    // --- SETUP GAME OBJECTS ---
+    create() {
+        // --- BACKGROUNDS ---
+        this.background = this.add.tileSprite(400, 300, 800, 600, 0x1e1e2e);
+        this.midground = this.add.tileSprite(400, 300, 800, 600, 0x283845); // This would be an image in a real game
+        
+        // --- GROUND ---
+        this.ground = this.add.tileSprite(400, 580, 800, 40, 0x141420);
+        this.physics.add.existing(this.ground, true);
+
+        // --- PLAYER ---
+        this.player = this.physics.add.sprite(200, 450, 'player').setScale(1.2);
+        this.player.setGravityY(2000);
+        this.physics.add.collider(this.player, this.ground);
+        
+        // --- OBSTACLES ---
+        this.obstacles = this.physics.add.group({ allowGravity: false, immovable: true });
+        this.physics.add.collider(this.player, this.obstacles, this.endGame, null, this);
+        this.time.addEvent({
+            delay: 1500,
+            callback: this.spawnObstacle,
+            callbackScope: this,
+            loop: true
+        });
+
+        // --- CONTROLS ---
+        this.input.on('pointerdown', this.jump, this);
+        this.input.keyboard.on('keydown-SPACE', this.jump, this);
+        
+        // --- PARTICLE EFFECTS ---
+        this.jumpParticles = this.add.particles(0, 0, 'particle', {
+            speed: 100,
+            scale: { start: 1.5, end: 0 },
+            lifespan: 300,
+            blendMode: 'ADD'
+        });
+        this.deathParticles = this.add.particles(0, 0, 'particle', {
+            speed: 200,
+            scale: { start: 2, end: 0 },
+            lifespan: 800,
+            blendMode: 'ADD',
+            emitting: false // Don't start automatically
+        });
+        
+        // --- UI ---
+        this.scoreText = document.getElementById('score');
+    }
+
+    // --- GAME LOOP ---
+    update() {
+        if (this.isGameOver) return;
+
+        // --- SCROLLING ---
+        this.background.tilePositionX += this.gameSpeed / 200;
+        this.midground.tilePositionX += this.gameSpeed / 100;
+        this.ground.tilePositionX += this.gameSpeed / 60;
+
+        // --- PLAYER ROTATION ---
+        if (!this.player.body.touching.down) {
+            this.player.angle += 8;
+        } else {
+            this.player.angle = 0;
+        }
+
+        // --- SCORE & DIFFICULTY ---
+        this.score++;
+        this.scoreText.innerText = `Score: ${this.score}`;
+        this.gameSpeed += 0.1; // Slowly increase speed
+    }
+
+    // --- GAME ACTIONS ---
+    jump() {
+        if (this.player.body.touching.down && !this.isGameOver) {
+            this.player.setVelocityY(-850);
+            this.jumpParticles.emitParticleAt(this.player.x, this.player.y + 20, 10);
+        }
+    }
+    
+    spawnObstacle() {
+        if (this.isGameOver) return;
+        
+        const obstacleType = Math.random() > 0.4 ? 'spike' : 'block';
+        const yPos = obstacleType === 'spike' ? 535 : 510; // Position blocks slightly lower
+
+        const obstacle = this.obstacles.create(850, yPos, obstacleType);
+        obstacle.setVelocityX(-this.gameSpeed);
+        obstacle.setImmovable(true);
+        obstacle.body.allowGravity = false;
+
+        // Clean up obstacles when they leave the screen
+        obstacle.checkWorldBounds = true;
+        obstacle.outOfBoundsKill = true;
+    }
+
+    endGame() {
+        if (this.isGameOver) return;
+
+        this.isGameOver = true;
+        this.physics.pause();
+        this.player.setVisible(false);
+
+        // Death effects
+        this.deathParticles.emitParticleAt(this.player.x, this.player.y, 50);
+
+        // Show game over screen
+        document.getElementById('game-container').style.display = 'none';
+        const gameOverScreen = document.getElementById('game-over-screen');
+        gameOverScreen.style.display = 'flex';
+        
+        const video = document.getElementById('game-over-video');
+        video.play();
+        
+        // Restart logic
+        const restartHandler = () => {
+            window.location.reload();
+        };
+        video.addEventListener('click', restartHandler);
+        document.getElementById('restart-button').addEventListener('click', restartHandler);
+    }
+}
+
+// --- PHASER CONFIGURATION ---
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    parent: 'game-container',
-    backgroundColor: '#34495e',
+    scale: {
+        mode: Phaser.Scale.FIT,
+        parent: 'game-container',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 800,
+        height: 600
+    },
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 2000 }, // Stronger gravity for a snappier feel
+            gravity: { y: 1500 },
             debug: false
         }
     },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
+    scene: GameScene
 };
 
-// --- GAME VARIABLES ---
-let player;
-let ground;
-let obstacles;
-let score = 0;
-let scoreText;
-let gameOver = false;
-const gameSpeed = -350;
-const jumpVelocity = -800;
-
 const game = new Phaser.Game(config);
-
-
-// --- PHASER SCENE FUNCTIONS ---
-
-function preload() {
-    // No assets to load, we are generating graphics dynamically
-}
-
-function create() {
-    // --- GROUND ---
-    // A TileSprite will scroll its texture, creating an infinite ground effect
-    ground = this.add.tileSprite(400, 580, 800, 40, 0x2c3e50).setOrigin(0.5);
-    this.physics.add.existing(ground, true); // Make it a static physics body
-    ground.body.setImmovable(true);
-    ground.body.allowGravity = false;
-
-    // --- PLAYER ---
-    player = this.physics.add.sprite(200, 500, null);
-    player.setBodySize(40, 40); // Set collision box size
-    player.setOrigin(0.5);
-    // Use a graphics object to draw the player's square shape
-    const playerGraphics = this.add.graphics();
-    playerGraphics.fillStyle(0x3498db, 1); // Blue color
-    playerGraphics.fillRect(-20, -20, 40, 40);
-    playerGraphics.generateTexture('player-texture', 40, 40);
-    playerGraphics.destroy();
-    player.setTexture('player-texture');
-    
-    player.setCollideWorldBounds(true);
-    player.body.world.bounds.bottom = 560; // Prevent player from falling through the edge
-
-    // --- OBSTACLES ---
-    obstacles = this.physics.add.group({
-        allowGravity: false,
-        immovable: true
-    });
-
-    // --- COLLISION DETECTION ---
-    this.physics.add.collider(player, ground);
-    this.physics.add.collider(player, obstacles, onPlayerDeath, null, this);
-
-    // --- CONTROLS ---
-    // Jump on spacebar press or pointer click/tap
-    this.input.on('pointerdown', handleJump, this);
-    this.input.keyboard.on('keydown-SPACE', handleJump, this);
-
-    // --- SCORE ---
-    scoreText = document.getElementById('score');
-
-    // --- OBSTACLE SPAWNING ---
-    this.time.addEvent({
-        delay: 1400,
-        callback: spawnObstacle,
-        callbackScope: this,
-        loop: true
-    });
-}
-
-function update() {
-    if (gameOver) {
-        return; // Stop all updates if the game is over
-    }
-
-    // Scroll the ground texture
-    ground.tilePositionX += Math.abs(gameSpeed) / 60;
-
-    // Add rotation to the player when in the air
-    if (!player.body.touching.down) {
-        player.angle += 8;
-    } else {
-        player.angle = 0; // Reset angle when on ground
-    }
-
-    // Update the score
-    score++;
-    scoreText.innerText = `Score: ${score}`;
-
-    // Clean up obstacles that are off-screen
-    obstacles.getChildren().forEach(obstacle => {
-        if (obstacle.getBounds().right < 0) {
-            obstacle.destroy();
-        }
-    });
-}
-
-
-// --- HELPER FUNCTIONS ---
-
-function handleJump() {
-    // Only allow jumping if the player is on the ground
-    if (player.body.touching.down && !gameOver) {
-        player.setVelocityY(jumpVelocity);
-    }
-}
-
-function spawnObstacle() {
-    if (gameOver) return;
-
-    // Create a spike (triangle)
-    const spike = this.add.graphics();
-    spike.fillStyle(0xe74c3c, 1); // Red color
-    spike.beginPath();
-    spike.moveTo(0, 50);
-    spike.lineTo(25, 0);
-    spike.lineTo(50, 50);
-    spike.closePath();
-    spike.fillPath();
-    
-    // Position it on the ground, off-screen to the right
-    const obstacleContainer = this.add.container(850, 540, [spike]);
-    obstacleContainer.setSize(50, 50);
-    
-    // Add it to the obstacles physics group
-    obstacles.add(obstacleContainer);
-    obstacleContainer.body.setVelocityX(gameSpeed);
-}
-
-function onPlayerDeath() {
-    if (gameOver) return; // Prevent this from running multiple times
-    
-    gameOver = true;
-    this.physics.pause();
-    player.setTint(0xff0000); // Tint player red
-
-    // Hide UI and game
-    document.getElementById('ui-container').style.display = 'none';
-    document.getElementById('game-container').style.display = 'none';
-
-    // Show and play video
-    const video = document.getElementById('game-over-video');
-    video.style.display = 'block';
-    video.play();
-    
-    // Add a click listener to the video to restart the game
-    video.addEventListener('click', () => {
-        window.location.reload();
-    });
-        }
