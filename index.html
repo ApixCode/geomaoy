@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geometry Dash Clone</title>
+    <title>Geo-Clone</title>
+    <!-- We can add a custom font for a better look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Geometry Dash Clone</h1>
+    <div id="ui-container">
+        <h1>Geo-Clone</h1>
+        <h2 id="instructions">Click or Press Space to Jump</h2>
+        <div id="score">Score: 0</div>
+    </div>
+    
     <div id="game-container"></div>
-    <video id="game-over-video" src="https://cdn.discordapp.com/attachments/1376139330858258552/1427840719372029992/ssstik.io_1760494097589.mp4?ex=68f053cb&is=68ef024b&hm=6e3716755ea3663680383d9e681f8163569e1aa8851bd73776ecb0e2963da279&" style="display: none;" controls></video>
+    
+    <video id="game-over-video" src="https://cdn.discordapp.com/attachments/1376139330858258552/1427840719372029992/ssstik.io_1760494097589.mp4?ex=68f053cb&is=68ef024b&hm=6e3716755ea3663680383d9e681f8163569e1aa8851bd73776ecb0e2963da279&" style="display: none;" loop></video>
 
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
     <script src="game.js"></script>
 </body>
 </html>
