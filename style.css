@@ -1,0 +1,21 @@
+body {
+    background-color: #222;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#game-container {
+    border: 3px solid #fff;
+}
+
+#game-over-video {
+    width: 80%;
+    max-width: 800px;
+    height: auto;
+}
