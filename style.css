@@ -1,21 +1,35 @@
 body {
-    background-color: #222;
-    color: #fff;
+    background-color: #2c3e50; /* A darker blue background */
+    color: #ecf0f1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif;
+}
+
+#ui-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#score {
+    font-size: 1.5em;
 }
 
 #game-container {
-    border: 3px solid #fff;
+    border: 3px solid #ecf0f1;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(236, 240, 241, 0.2);
 }
 
 #game-over-video {
-    width: 80%;
-    max-width: 800px;
+    width: 90%;
+    max-width: 600px;
     height: auto;
+    border: 3px solid #e74c3c;
+    border-radius: 8px;
+    cursor: pointer; /* Indicates the video is clickable */
 }
