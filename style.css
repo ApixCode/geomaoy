@@ -1,18 +1,36 @@
 body {
-    background-color: #2c3e50; /* A darker blue background */
-    color: #ecf0f1;
+    background-color: #1e1e2e; /* Darker, modern background */
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* Prevents scrollbars */
+}
+
+#game-wrapper {
+    width: 100%;
+    max-width: 1000px; /* Max width on large screens */
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
+    align-items: center;
 }
 
 #ui-container {
+    width: 100%;
     text-align: center;
-    margin-bottom: 10px;
+    padding: 10px 0;
+}
+
+#title {
+    margin: 0;
+    color: #89f7fe;
+    text-shadow: 0 0 10px #89f7fe;
 }
 
 #score {
@@ -20,16 +38,43 @@ body {
 }
 
 #game-container {
-    border: 3px solid #ecf0f1;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(236, 240, 241, 0.2);
+    width: 100%;
+    max-width: 1000px;
+    /* This maintains a 4:3 aspect ratio, common for games */
+    aspect-ratio: 4 / 3;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(137, 247, 254, 0.5);
+    overflow: hidden;
+}
+
+#game-over-screen {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 #game-over-video {
     width: 90%;
     max-width: 600px;
-    height: auto;
-    border: 3px solid #e74c3c;
+    border: 3px solid #ff79c6;
     border-radius: 8px;
-    cursor: pointer; /* Indicates the video is clickable */
+}
+
+#restart-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ff79c6;
+    color: #1e1e2e;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#restart-button:hover {
+    transform: scale(1.05);
 }
